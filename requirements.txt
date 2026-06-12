@@ -1,8 +1,8 @@
-fastapi>=0.111
-numpy>=1.26
-pydantic>=2.7
-pytest>=8.2
-torch>=2.2
-uvicorn>=0.30
-xarray>=2024.3
+fastapi==0.103.2
+numpy>=1.21,<2
+pydantic>=1.10,<2
+pytest>=7,<8
+torch>=2.0,<3
+uvicorn==0.23.2
+xarray>=2023.1
 
