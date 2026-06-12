@@ -8,16 +8,16 @@ version = "0.1.0"
 description = "Compact ML precipitation postprocessing prototype for application portfolio."
 requires-python = ">=3.10"
 dependencies = [
-  "fastapi==0.103.2",
-  "numpy>=1.21,<2",
-  "pydantic>=1.10,<2",
+  "fastapi>=0.115,<1",
+  "numpy>=2.1,<3",
+  "pydantic>=2.7,<3",
   "torch>=2.0,<3",
-  "uvicorn==0.23.2",
-  "xarray>=2023.1",
+  "uvicorn>=0.30,<1",
+  "xarray>=2024.7",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7,<8"]
+dev = ["pytest>=8,<9", "httpx2>=2.4,<3"]
 grib = ["cfgrib>=0.9.14", "eccodes>=1.7"]
 
 [tool.setuptools.packages.find]
