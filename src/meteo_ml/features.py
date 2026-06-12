@@ -4,7 +4,19 @@ import numpy as np
 import xarray as xr
 
 
-FEATURE_NAMES = ["temperature", "humidity", "pressure", "wind_u", "wind_v"]
+FEATURE_NAMES = [
+    "latitude",
+    "longitude",
+    "elevation_m",
+    "coast_distance_km",
+    "day_of_year",
+    "temperature",
+    "humidity",
+    "pressure",
+    "wind_u",
+    "wind_v",
+    "nwp_precipitation",
+]
 
 
 def to_feature_matrix(ds: xr.Dataset) -> tuple[np.ndarray, np.ndarray]:
@@ -23,3 +35,6 @@ def standardize(x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     std = np.where(std == 0.0, 1.0, std)
     return (x - mean) / std, mean, std
 
+
+def apply_standardization(x: np.ndarray, mean: np.ndarray, std: np.ndarray) -> np.ndarray:
+    return (x - mean) / np.where(std == 0.0, 1.0, std)
