@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meteo-ml-portfolio"
+version = "0.1.0"
+description = "Compact ML precipitation postprocessing prototype for application portfolio."
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.111",
+  "numpy>=1.26",
+  "pydantic>=2.7",
+  "torch>=2.2",
+  "uvicorn>=0.30",
+  "xarray>=2024.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.2"]
+grib = ["cfgrib>=0.9.14", "eccodes>=1.7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
