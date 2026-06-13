@@ -46,7 +46,7 @@ python3 scripts/plot_real_open_meteo_kochi.py
 uvicorn meteo_ml.serve:app --reload
 ```
 
-# The server keeps running until stopped with `CTRL+C`. Open the interactive API page here:
+ The server keeps running until stopped with `CTRL+C`. Open the interactive API page here:
 
 ```text
 http://127.0.0.1:8000/docs
