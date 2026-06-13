@@ -63,7 +63,7 @@ def main() -> None:
     fig.text(
         0.01,
         0.01,
-        "Source: Open-Meteo Forecast API, location Kochi, Kerala. This figure is generated live and may change.",
+        "Source: Open-Meteo Forecast API, Kochi, Kerala.",
         fontsize=8,
     )
     fig.savefig(output, dpi=180)
