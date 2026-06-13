@@ -106,6 +106,13 @@ The second figure uses **real forecast data** from the Open-Meteo Forecast API f
 
 The simulated plot is useful for reproducible testing; the real-data plot shows how the repository can connect to live meteorological data without requiring a large GRIB/netCDF download.
 
+
+Small note: this command works, but a more readable Docker version is:
+
+```bash
+docker build -t kerala-rainfall-prototype .
+docker run -p 8000:8000 kerala-rainfall-prototype
+
 ## Real-Data Extension
 
 The ML pipeline uses simulated demo data so the project can run easily and reproducibly. We also include a live Open-Meteo forecast plot for Kochi to show how real weather data can enter the workflow. In a next step, the demo data could be replaced with GFS GRIB2 forecasts and CHIRPS, IMERG, or station rainfall observations.
