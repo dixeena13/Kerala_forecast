@@ -118,9 +118,9 @@ The fourth figure is a gridded weather-field style rainfall map for Kerala. It s
 
 Small note: A more readable Docker version is:
 
-```bash
 docker build -t kerala-rainfall-prototype .
 docker run -p 8000:8000 kerala-rainfall-prototype
+
 
 ## Real-Data Extension
 
