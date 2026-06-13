@@ -58,7 +58,7 @@ def main() -> None:
 
     lines, labels = ax_rain.get_legend_handles_labels()
     lines2, labels2 = ax_prob.get_legend_handles_labels()
-    ax_rain.legend(lines + lines2, labels + labels2, loc="upper left")
+    ax_rain.legend(lines + lines2, labels + labels2, loc="upper right")
 
     fig.text(
         0.01,

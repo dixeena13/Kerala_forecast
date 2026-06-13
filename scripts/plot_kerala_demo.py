@@ -83,7 +83,7 @@ def main() -> None:
     fig.text(
         0.01,
         0.01,
-        "Synthetic demo data; operational version would use real station/radar/NWP inputs.",
+        "Simulated demo data; operational version would use real station/radar/NWP inputs.",
         fontsize=8,
     )
     fig.subplots_adjust(top=0.9, bottom=0.1, left=0.08, right=0.98)

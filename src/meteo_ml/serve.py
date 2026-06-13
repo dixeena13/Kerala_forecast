@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 
 from meteo_ml.data import load_dataset
@@ -31,6 +32,9 @@ def _bootstrap_model() -> tuple[PrecipitationRegressor, np.ndarray, np.ndarray]:
 
 
 app = FastAPI(title="Kerala Rainfall Forecast Postprocessing Prototype")
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    return RedirectResponse(url="/docs")
 model, feature_mean, feature_std = _bootstrap_model()
 
 

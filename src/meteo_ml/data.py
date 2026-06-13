@@ -11,7 +11,7 @@ from meteo_ml.kerala import KERALA_STATIONS
 def make_kerala_demo_dataset(n_days: int = 180, seed: int = 7) -> xr.Dataset:
     """Create Kerala monsoon-like station data for a reproducible prototype.
 
-    The data are synthetic, but the variables are shaped like fields commonly used
+    The data are simulated, but the variables are shaped like fields commonly used
     for local rainfall postprocessing: NWP precipitation, humidity, pressure, wind,
     temperature, topography, coastal exposure, and day of year.
     """

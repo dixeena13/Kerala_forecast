@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "meteo-ml-portfolio"
 version = "0.1.0"
-description = "Compact ML precipitation postprocessing prototype for application portfolio."
-requires-python = ">=3.10"
+description = "Kerala rainfall forecast postprocessing prototype with PyTorch, xarray, FastAPI, and real-data visualization."
+requires-python = ">=3.13"
 dependencies = [
   "fastapi>=0.115,<1",
   "numpy>=2.1,<3",

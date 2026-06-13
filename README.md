@@ -1,5 +1,5 @@
 # Kerala Rainfall Forecast Postprocessing Prototype
-This repository demonstrates how to structure a practical ML workflow for improving local rainfall forecasts in **Kerala, India**, a South Asian monsoon region. It is a compact prototype, not an operational weather service: the included data are generated but shaped like meteorological station/NWP data so the full pipeline can be reviewed and run quickly.
+This repository demonstrates how to structure a practical ML workflow for improving local rainfall forecasts in **Kerala, India**, a South Asian monsoon region. It is a compact prototype, not an operational weather service. The included demo data are simulated but shaped like meteorological station/NWP data.
 
 ## What The Prototype Does
 
@@ -40,18 +40,17 @@ python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 python3 -m pip install -e .
 python3 -m pytest -o cache_dir=/tmp/meteo-ml-pytest-cache
-python3 -m meteo_ml.train --epochs 20
+python3 -m meteo_ml.train --epochs 100
 python3 scripts/plot_kerala_demo.py
 python3 scripts/plot_real_open_meteo_kochi.py
 uvicorn meteo_ml.serve:app --reload
 ```
+The server keeps running until stopped with `CTRL+C`.
 
- The server keeps running until stopped with `CTRL+C`. Open the interactive API page here:
+Open the interactive API documentation and test page:
 
 ```text
 http://127.0.0.1:8000/docs
-http://127.0.0.1:8000/health
-http://127.0.0.1:8000/stations
 ```
 
 Example inference request:
@@ -82,7 +81,11 @@ Example response:
   "model_version": "kerala-prototype-0.2.0"
 }
 ```
+Example training output:
 
+```text
+mae_mm=1.919 rmse_mm=2.396 heavy_rain_recall=0.667
+```
 
 ## Figures
 
@@ -93,7 +96,7 @@ python3 scripts/plot_kerala_demo.py
 python3 scripts/plot_real_open_meteo_kochi.py
 ```
 
-The first figure visualizes the synthetic Kerala monsoon-like dataset used for the reproducible ML pipeline:
+The first figure visualizes the simulated Kerala monsoon-like dataset used for the reproducible ML pipeline:
 
 ![Kerala demo rainfall](figures/kerala_demo_rainfall.png)
 
@@ -101,5 +104,8 @@ The second figure uses **real forecast data** from the Open-Meteo Forecast API f
 
 ![Kochi real Open-Meteo forecast](figures/kochi_real_open_meteo_forecast.png)
 
-The synthetic plot is useful for reproducible testing; the real-data plot shows how the repository can connect to live meteorological data without requiring a large GRIB/netCDF download.
+The simulated plot is useful for reproducible testing; the real-data plot shows how the repository can connect to live meteorological data without requiring a large GRIB/netCDF download.
 
+## Real-Data Extension
+
+The current ML pipeline uses simulated demo data for reproducibility. The real-data figure uses live Open-Meteo forecast data for Kochi. A production extension would replace the demo dataset with GFS GRIB2 forecasts and CHIRPS/IMERG/station rainfall observations using `xarray`, `cfgrib`, and netCDF/GRIB workflows.
