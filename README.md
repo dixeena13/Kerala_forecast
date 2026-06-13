@@ -49,9 +49,13 @@ The advertised role asks for meteorological data processing, ML for precipitatio
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
+python3 -m pip install -e .
 python3 -m pytest -o cache_dir=/tmp/meteo-ml-pytest-cache
 python3 -m meteo_ml.train --epochs 20
+python3 scripts/plot_kerala_demo.py
+python3 scripts/plot_real_open_meteo_kochi.py
 uvicorn meteo_ml.serve:app --reload
 ```
 
@@ -83,6 +87,26 @@ Example response:
   "model_version": "kerala-prototype-0.2.0"
 }
 ```
+
+
+## Figures
+
+The repository includes two plotting scripts:
+
+```bash
+python3 scripts/plot_kerala_demo.py
+python3 scripts/plot_real_open_meteo_kochi.py
+```
+
+The first figure visualizes the synthetic Kerala monsoon-like dataset used for the reproducible ML pipeline:
+
+![Kerala demo rainfall](figures/kerala_demo_rainfall.png)
+
+The second figure uses **real forecast data** from the Open-Meteo Forecast API for Kochi, Kerala. It shows daily precipitation sum and precipitation probability:
+
+![Kochi real Open-Meteo forecast](figures/kochi_real_open_meteo_forecast.png)
+
+The synthetic plot is useful for reproducible testing; the real-data plot shows how the repository can connect to live meteorological data without requiring a large GRIB/netCDF download.
 
 ## How I Would Extend This With Real Data
 
