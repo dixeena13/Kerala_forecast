@@ -116,10 +116,7 @@ The fourth figure is a gridded weather-field style rainfall map for Kerala. It s
 
 ![Kerala real rainfall field map](figures/kerala_real_rainfall_field_map.png)
 
-The simulated plot is useful for reproducible testing; the real-data plot shows how the repository can connect to live meteorological data without requiring a large GRIB/netCDF download.
-
-
-Small note: this command works, but a more readable Docker version is:
+Small note: A more readable Docker version is:
 
 ```bash
 docker build -t kerala-rainfall-prototype .
