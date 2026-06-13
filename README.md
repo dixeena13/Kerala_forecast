@@ -44,6 +44,7 @@ python3 -m meteo_ml.train --epochs 100
 python3 scripts/plot_kerala_demo.py
 python3 scripts/plot_real_open_meteo_kochi.py
 python3 scripts/plot_real_open_meteo_station_map.py
+python3 scripts/plot_real_open_meteo_field_map.py
 uvicorn meteo_ml.serve:app --reload
 ```
 The server keeps running until stopped with `CTRL+C`.
@@ -96,6 +97,7 @@ The repository includes two plotting scripts:
 python3 scripts/plot_kerala_demo.py
 python3 scripts/plot_real_open_meteo_kochi.py
 python3 scripts/plot_real_open_meteo_station_map.py
+python3 scripts/plot_real_open_meteo_field_map.py
 ```
 
 The first figure visualizes the simulated Kerala monsoon-like dataset used for the reproducible ML pipeline:
@@ -109,6 +111,10 @@ The second figure uses **real forecast data** from the Open-Meteo Forecast API f
 The third figure is a station forecast map using real Open-Meteo forecast data for multiple Kerala stations. Color shows forecast rainfall and circle size shows rain probability:
 
 ![Kerala real station forecast map](figures/kerala_real_station_forecast_map.png)
+
+The fourth figure is a gridded weather-field style rainfall map for Kerala. It samples real Open-Meteo forecast data over a small latitude/longitude grid, shades forecast rainfall, and overlays station locations:
+
+![Kerala real rainfall field map](figures/kerala_real_rainfall_field_map.png)
 
 The simulated plot is useful for reproducible testing; the real-data plot shows how the repository can connect to live meteorological data without requiring a large GRIB/netCDF download.
 
