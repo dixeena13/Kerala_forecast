@@ -108,4 +108,4 @@ The simulated plot is useful for reproducible testing; the real-data plot shows 
 
 ## Real-Data Extension
 
-The current ML pipeline uses simulated demo data for reproducibility. The real-data figure uses live Open-Meteo forecast data for Kochi. A production extension would replace the demo dataset with GFS GRIB2 forecasts and CHIRPS/IMERG/station rainfall observations using `xarray`, `cfgrib`, and netCDF/GRIB workflows.
+The ML pipeline uses simulated demo data so the project can run easily and reproducibly. We also include a live Open-Meteo forecast plot for Kochi to show how real weather data can enter the workflow. In a next step, the demo data could be replaced with GFS GRIB2 forecasts and CHIRPS, IMERG, or station rainfall observations.
