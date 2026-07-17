@@ -19,12 +19,14 @@ This repository demonstrates how to structure a practical ML workflow for improv
 │   ├── features.py     # Feature extraction and standardization
 │   ├── model.py        # PyTorch precipitation postprocessing model
 │   ├── evaluate.py     # MAE/RMSE and heavy-rain metrics
+│   ├── scenarios.py    # Simulated climate-scenario ensemble and extremes indicators
 │   ├── train.py        # Training and model artifact export
 │   └── serve.py        # FastAPI inference service
 ├── tests/
 │   └── test_pipeline.py
 ├── docs/
-│   └── workflow.md     # Step-by-step explanation
+│   ├── workflow.md     # Step-by-step explanation
+│   └── climate_scenario_extension.md
 ├── .github/workflows/ci.yml
 ├── Dockerfile
 ├── pyproject.toml
@@ -45,6 +47,7 @@ python3 scripts/plot_kerala_demo.py
 python3 scripts/plot_real_open_meteo_kochi.py
 python3 scripts/plot_real_open_meteo_station_map.py
 python3 scripts/plot_real_open_meteo_field_map.py
+python3 scripts/plot_climate_extreme_scenario.py
 uvicorn meteo_ml.serve:app --reload
 ```
 The server keeps running until stopped with `CTRL+C`.
@@ -98,6 +101,7 @@ python3 scripts/plot_kerala_demo.py
 python3 scripts/plot_real_open_meteo_kochi.py
 python3 scripts/plot_real_open_meteo_station_map.py
 python3 scripts/plot_real_open_meteo_field_map.py
+python3 scripts/plot_climate_extreme_scenario.py
 ```
 
 The first figure visualizes the simulated Kerala monsoon-like dataset used for the reproducible ML pipeline:
@@ -123,6 +127,23 @@ docker build -t kerala-rainfall-prototype .
 docker run -p 8000:8000 kerala-rainfall-prototype
 ```
 
+## Climate Scenario Follow-Up
+
+This repository also includes a small follow-up extension inspired by climate-scenario product work. It uses a simulated baseline/future rainfall ensemble to derive user-facing extreme-rainfall indicators:
+
+- heavy-rain days per year above 20 mm/day
+- annual maximum daily rainfall
+- 95th percentile daily rainfall
+- ensemble mean change and 10th-90th percentile spread
+
+The extension is not an operational climate projection. It is meant to show how the same Python/xarray workflow can translate ensemble climate information into compact scenario indicators and figures for different user groups.
+
+```bash
+python3 scripts/plot_climate_extreme_scenario.py
+```
+
+![Climate extreme scenario demo](figures/climate_extreme_scenario_demo.png)
+
 ## Real-Data Extension
 
-The ML pipeline uses simulated demo data so the project can run easily and reproducibly. We also include a live Open-Meteo forecast plot for Kochi to show how real weather data can enter the workflow. In a next step, the demo data could be replaced with GFS GRIB2 forecasts and CHIRPS, IMERG, or station rainfall observations.
+The ML pipeline uses simulated demo data so the project can run easily and reproducibly. The project also includes a live Open-Meteo forecast plot for Kochi to show how real weather data can enter the workflow. In a next step, the demo data could be replaced with GFS GRIB2 forecasts and CHIRPS, IMERG, or station rainfall observations.
