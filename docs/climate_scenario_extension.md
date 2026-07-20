@@ -2,13 +2,6 @@
 
 This follow-up extension connects the Kerala rainfall prototype to a climate-scenario product workflow.
 
-The aim is not to reproduce official Swiss climate scenarios. Instead, it demonstrates the type of technical workflow that appears in climate-scenario product development:
-
-1. Create or ingest ensemble climate data.
-2. Derive user-facing extreme-rainfall indicators.
-3. Summarize ensemble spread and uncertainty.
-4. Produce a compact figure that can be interpreted by users outside the modelling team.
-
 ## Indicators
 
 The demo module `src/meteo_ml/scenarios.py` calculates:

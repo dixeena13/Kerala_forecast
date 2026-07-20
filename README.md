@@ -136,7 +136,7 @@ This repository also includes a small follow-up extension inspired by climate-sc
 - 95th percentile daily rainfall
 - ensemble mean change and 10th-90th percentile spread
 
-The extension is not an operational climate projection. It is meant to show how the same Python/xarray workflow can translate ensemble climate information into compact scenario indicators and figures for different user groups.
+The extension is not an operational climate projection. 
 
 ```bash
 python3 scripts/plot_climate_extreme_scenario.py
