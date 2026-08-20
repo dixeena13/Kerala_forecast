@@ -103,3 +103,37 @@ def ensemble_change_summary(indicators: xr.Dataset) -> xr.Dataset:
         variables[f"{name}_change_p10"] = _drop_quantile_coord(variable.quantile(0.10, dim="member"))
         variables[f"{name}_change_p90"] = _drop_quantile_coord(variable.quantile(0.90, dim="member"))
     return xr.Dataset(variables)
+
+
+
+def _risk_message(heavy_days_change: float, annual_max_change: float) -> str:
+    if heavy_days_change >= 25.0 or annual_max_change >= 60.0:
+        return "large increase in extreme-rainfall indicators"
+    if heavy_days_change >= 15.0 or annual_max_change >= 35.0:
+        return "moderate increase in extreme-rainfall indicators"
+    if heavy_days_change > 0.0 or annual_max_change > 0.0:
+        return "small increase in extreme-rainfall indicators"
+    return "no increase in this simulated ensemble summary"
+
+
+def scenario_product_records(summary: xr.Dataset) -> list[dict[str, str | float]]:
+    """Convert scenario change indicators into user-facing records."""
+    records: list[dict[str, str | float]] = []
+    for station in summary["station"].values:
+        heavy_mean = float(summary["heavy_rain_days_per_year_change_mean"].sel(station=station))
+        heavy_p10 = float(summary["heavy_rain_days_per_year_change_p10"].sel(station=station))
+        heavy_p90 = float(summary["heavy_rain_days_per_year_change_p90"].sel(station=station))
+        annual_max_mean = float(summary["annual_max_daily_rainfall_change_mean"].sel(station=station))
+        p95_mean = float(summary["p95_daily_rainfall_change_mean"].sel(station=station))
+        records.append(
+            {
+                "station": str(station),
+                "heavy_rain_days_change_mean": round(heavy_mean, 2),
+                "heavy_rain_days_change_p10": round(heavy_p10, 2),
+                "heavy_rain_days_change_p90": round(heavy_p90, 2),
+                "annual_max_daily_rainfall_change_mm": round(annual_max_mean, 2),
+                "p95_daily_rainfall_change_mm": round(p95_mean, 2),
+                "interpretation": _risk_message(heavy_mean, annual_max_mean),
+            }
+        )
+    return records

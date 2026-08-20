@@ -22,3 +22,13 @@ This mirrors important parts of climate-scenario product support:
 - communicating uncertainty to practitioners and end users
 
 The included data are simulated for reproducibility and are not operational climate projections.
+
+
+## Product Summary
+
+The script `scripts/generate_scenario_product_summary.py` converts the ensemble indicators into two lightweight scenario-product outputs:
+
+- `products/extreme_rainfall_scenario_summary.csv`
+- `products/extreme_rainfall_scenario_summary.md`
+
+This step is meant to demonstrate the communication layer of climate-scenario work: compact station-level indicators, uncertainty ranges, and short interpretation text for users.

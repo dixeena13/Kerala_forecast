@@ -1,0 +1,10 @@
+station,heavy_rain_days_change_mean,heavy_rain_days_change_p10,heavy_rain_days_change_p90,annual_max_daily_rainfall_change_mm,p95_daily_rainfall_change_mm,interpretation
+Thiruvananthapuram,20.01,13.49,25.1,45.37,10.24,moderate increase in extreme-rainfall indicators
+Kollam,19.34,14.2,24.6,46.52,9.68,moderate increase in extreme-rainfall indicators
+Alappuzha,19.3,13.14,24.87,48.08,10.34,moderate increase in extreme-rainfall indicators
+Kochi,20.34,15.46,26.27,46.4,10.14,moderate increase in extreme-rainfall indicators
+Thrissur,19.09,14.67,24.01,42.81,9.66,moderate increase in extreme-rainfall indicators
+Kozhikode,19.34,13.03,25.4,47.02,9.84,moderate increase in extreme-rainfall indicators
+Kannur,20.97,16.34,26.03,46.11,10.59,moderate increase in extreme-rainfall indicators
+Wayanad,22.43,18.06,28.19,56.97,12.04,moderate increase in extreme-rainfall indicators
+Idukki,24.01,18.69,29.08,64.75,13.4,large increase in extreme-rainfall indicators

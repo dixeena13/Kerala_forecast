@@ -48,6 +48,7 @@ python3 scripts/plot_real_open_meteo_kochi.py
 python3 scripts/plot_real_open_meteo_station_map.py
 python3 scripts/plot_real_open_meteo_field_map.py
 python3 scripts/plot_climate_extreme_scenario.py
+python3 scripts/generate_scenario_product_summary.py
 uvicorn meteo_ml.serve:app --reload
 ```
 The server keeps running until stopped with `CTRL+C`.
@@ -102,6 +103,7 @@ python3 scripts/plot_real_open_meteo_kochi.py
 python3 scripts/plot_real_open_meteo_station_map.py
 python3 scripts/plot_real_open_meteo_field_map.py
 python3 scripts/plot_climate_extreme_scenario.py
+python3 scripts/generate_scenario_product_summary.py
 ```
 
 The first figure visualizes the simulated Kerala monsoon-like dataset used for the reproducible ML pipeline:
@@ -140,9 +142,21 @@ The extension is not an operational climate projection.
 
 ```bash
 python3 scripts/plot_climate_extreme_scenario.py
+python3 scripts/generate_scenario_product_summary.py
 ```
 
 ![Climate extreme scenario demo](figures/climate_extreme_scenario_demo.png)
+
+The extension also generates a small user-facing scenario product summary:
+
+```bash
+python3 scripts/generate_scenario_product_summary.py
+```
+
+Outputs:
+
+- `products/extreme_rainfall_scenario_summary.csv`
+- `products/extreme_rainfall_scenario_summary.md`
 
 ## Real-Data Extension
 

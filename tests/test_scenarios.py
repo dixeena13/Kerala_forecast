@@ -2,6 +2,7 @@ from meteo_ml.scenarios import (
     ensemble_change_summary,
     extreme_rainfall_indicators,
     make_extreme_rainfall_scenario_dataset,
+    scenario_product_records,
 )
 
 
@@ -28,3 +29,15 @@ def test_ensemble_change_summary_contains_spread() -> None:
     assert "heavy_rain_days_per_year_change_mean" in summary
     assert "heavy_rain_days_per_year_change_p10" in summary
     assert "heavy_rain_days_per_year_change_p90" in summary
+
+
+
+def test_scenario_product_records_are_user_facing() -> None:
+    ds = make_extreme_rainfall_scenario_dataset(n_years=2, n_members=3)
+    summary = ensemble_change_summary(extreme_rainfall_indicators(ds))
+    records = scenario_product_records(summary)
+    assert records
+    first = records[0]
+    assert "station" in first
+    assert "heavy_rain_days_change_mean" in first
+    assert "interpretation" in first
