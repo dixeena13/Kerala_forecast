@@ -1,6 +1,5 @@
 # Extreme Rainfall Scenario Product Summary
 
-This is a simulated portfolio product summary, not an operational climate projection.
 It demonstrates how ensemble climate information can be translated into station-level indicators for users.
 
 | Station | Heavy-rain days change (days/year) | Ensemble range | Annual max change (mm/day) | 95th percentile change (mm/day) | Interpretation |
