@@ -20,13 +20,15 @@ This repository demonstrates how to structure a practical ML workflow for improv
 │   ├── model.py        # PyTorch precipitation postprocessing model
 │   ├── evaluate.py     # MAE/RMSE and heavy-rain metrics
 │   ├── scenarios.py    # Simulated climate-scenario ensemble and extremes indicators
+│   ├── rag.py          # Local RAG-style retrieval over project docs/products
 │   ├── train.py        # Training and model artifact export
 │   └── serve.py        # FastAPI inference service
 ├── tests/
 │   └── test_pipeline.py
 ├── docs/
 │   ├── workflow.md     # Step-by-step explanation
-│   └── climate_scenario_extension.md
+│   ├── climate_scenario_extension.md
+│   └── genai_rag_extension.md
 ├── .github/workflows/ci.yml
 ├── Dockerfile
 ├── pyproject.toml
@@ -95,7 +97,7 @@ mae_mm=1.919 rmse_mm=2.396 heavy_rain_recall=0.667
 
 ## Figures
 
-The repository includes two plotting scripts:
+The repository includes plotting and product-generation scripts:
 
 ```bash
 python3 scripts/plot_kerala_demo.py
@@ -157,6 +159,19 @@ Outputs:
 
 - `products/extreme_rainfall_scenario_summary.csv`
 - `products/extreme_rainfall_scenario_summary.md`
+
+## GenAI/RAG Extension
+
+The project includes a small local RAG-style assistant for scenario-product support. It retrieves evidence from the README, workflow notes, climate-scenario documentation, and generated product summaries, then returns cited snippets. This demonstrates how GenAI could help users interpret rainfall and climate-scenario products without giving ungrounded answers.
+
+```bash
+python3 scripts/query_scenario_assistant.py "How should users interpret heavy-rain scenario indicators?"
+python3 scripts/plot_rag_workflow.py
+```
+
+![RAG scenario assistant workflow](figures/rag_scenario_assistant_workflow.png)
+
+The current version is deliberately local and lightweight. A production version could add embeddings, an LLM response layer, access control, feedback collection, and answer-quality evaluation.
 
 ## Real-Data Extension
 
