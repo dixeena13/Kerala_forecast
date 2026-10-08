@@ -21,7 +21,7 @@ This repository demonstrates how to structure a practical ML workflow for improv
 │   ├── evaluate.py     # MAE/RMSE and heavy-rain metrics
 │   ├── scenarios.py    # Simulated climate-scenario ensemble and extremes indicators
 │   ├── rag.py          # Local RAG-style retrieval over project docs/products
-│   ├── army_products.py # Army weather-product requirements and decision matrix
+│   ├── ops_weather_products.py # Operational weather-product requirements and decision matrix
 │   ├── train.py        # Training and model artifact export
 │   └── serve.py        # FastAPI inference service
 ├── tests/
@@ -30,7 +30,7 @@ This repository demonstrates how to structure a practical ML workflow for improv
 │   ├── workflow.md     # Step-by-step explanation
 │   ├── climate_scenario_extension.md
 │   ├── genai_rag_extension.md
-│   └── army_weather_product_extension.md
+│   └── ops_weather_product_extension.md
 ├── .github/workflows/ci.yml
 ├── Dockerfile
 ├── pyproject.toml
@@ -53,8 +53,8 @@ python3 scripts/plot_real_open_meteo_station_map.py
 python3 scripts/plot_real_open_meteo_field_map.py
 python3 scripts/plot_climate_extreme_scenario.py
 python3 scripts/generate_scenario_product_summary.py
-python3 scripts/generate_army_weather_product_brief.py
-python3 scripts/plot_army_weather_decision_matrix.py
+python3 scripts/generate_ops_weather_product_brief.py
+python3 scripts/plot_ops_weather_decision_matrix.py
 uvicorn meteo_ml.serve:app --reload
 ```
 The server keeps running until stopped with `CTRL+C`.
@@ -110,8 +110,8 @@ python3 scripts/plot_real_open_meteo_station_map.py
 python3 scripts/plot_real_open_meteo_field_map.py
 python3 scripts/plot_climate_extreme_scenario.py
 python3 scripts/generate_scenario_product_summary.py
-python3 scripts/generate_army_weather_product_brief.py
-python3 scripts/plot_army_weather_decision_matrix.py
+python3 scripts/generate_ops_weather_product_brief.py
+python3 scripts/plot_ops_weather_decision_matrix.py
 ```
 
 The first figure visualizes the simulated Kerala monsoon-like dataset used for the reproducible ML pipeline:
@@ -137,24 +137,24 @@ docker build -t kerala-rainfall-prototype .
 docker run -p 8000:8000 kerala-rainfall-prototype
 ```
 
-## Swiss Army Weather Product Extension
+## Operational Weather Product Extension
 
-This follow-up extension is inspired by project-leadership and customer-facing weather-service work. It translates simulated Army mission requirements into weather-product priorities, a product matrix, and a short briefing document.
+This follow-up extension is inspired by project-leadership and customer-facing weather-service work. It translates simulated operational user requirements into weather-product priorities, a product matrix, and a short briefing document.
 
 ```bash
-python3 scripts/generate_army_weather_product_brief.py
-python3 scripts/plot_army_weather_decision_matrix.py
+python3 scripts/generate_ops_weather_product_brief.py
+python3 scripts/plot_ops_weather_decision_matrix.py
 ```
 
 Outputs:
 
-- `products/army_weather_product_matrix.csv`
-- `products/army_weather_product_brief.md`
-- `figures/army_weather_product_decision_matrix.png`
+- `products/ops_weather_product_matrix.csv`
+- `products/ops_weather_product_brief.md`
+- `figures/ops_weather_product_decision_matrix.png`
 
-![Army weather product decision matrix](figures/army_weather_product_decision_matrix.png)
+![Operational weather product decision matrix](figures/ops_weather_product_decision_matrix.png)
 
-The extension is not an operational MeteoSwiss or Swiss Army product. It demonstrates requirements elicitation, product selection, and communication of meteorological hazards for different user groups.
+The extension is not an operational MeteoSwiss or internal operational product. It demonstrates requirements elicitation, product selection, and communication of meteorological hazards for different user groups.
 
 ## Climate Scenario Follow-Up
 

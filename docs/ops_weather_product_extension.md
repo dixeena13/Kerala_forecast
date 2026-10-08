@@ -1,8 +1,8 @@
-# Swiss Army Weather Product Extension
+# Operational Weather Product Extension
 
 This extension connects the rainfall and climate prototype to a project-leadership and product-design workflow for operational weather services.
 
-The aim is not to represent MeteoSwiss or Swiss Army internal products. It is a portfolio demonstration of how user requirements can be translated into meteorological products and IT deliverables.
+The aim is not to represent MeteoSwiss or internal operational products. It is a portfolio demonstration of how user requirements can be translated into meteorological products and IT deliverables.
 
 ## What It Demonstrates
 
@@ -24,6 +24,6 @@ This extension addresses:
 
 Generated outputs:
 
-- `products/army_weather_product_matrix.csv`
-- `products/army_weather_product_brief.md`
-- `figures/army_weather_product_decision_matrix.png`
+- `products/ops_weather_product_matrix.csv`
+- `products/ops_weather_product_brief.md`
+- `figures/ops_weather_product_decision_matrix.png`

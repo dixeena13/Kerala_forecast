@@ -12,11 +12,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from meteo_ml.army_products import HAZARDS, mission_profiles
+from meteo_ml.ops_weather_products import HAZARDS, mission_profiles
 
 
 def main() -> None:
-    output = Path("figures/army_weather_product_decision_matrix.png")
+    output = Path("figures/ops_weather_product_decision_matrix.png")
     output.parent.mkdir(parents=True, exist_ok=True)
 
     profiles = mission_profiles()
@@ -37,7 +37,7 @@ def main() -> None:
     colorbar = fig.colorbar(image, ax=ax, shrink=0.82, pad=0.02)
     colorbar.set_label("Requirement importance (1 low - 5 high)")
 
-    ax.set_title("Weather Product Requirement Matrix for Army Mission Profiles", fontsize=15, pad=12)
+    ax.set_title("Weather Product Requirement Matrix for Operational Use Cases", fontsize=15, pad=12)
     ax.set_xlabel("Weather hazard / product driver")
     ax.set_ylabel("Mission profile")
     ax.text(

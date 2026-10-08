@@ -1,4 +1,4 @@
-from meteo_ml.army_products import HAZARDS, mission_profiles, product_matrix_records, simple_mission_risk, summarize_requirements
+from meteo_ml.ops_weather_products import HAZARDS, mission_profiles, product_matrix_records, simple_mission_risk, summarize_requirements
 
 
 def test_product_matrix_covers_all_profiles_and_hazards() -> None:

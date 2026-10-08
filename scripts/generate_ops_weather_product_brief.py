@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from meteo_ml.army_products import product_matrix_records, summarize_requirements
+from meteo_ml.ops_weather_products import product_matrix_records, summarize_requirements
 
 
 def write_csv(records: list[dict[str, str | int]], path: Path) -> None:
@@ -20,9 +20,9 @@ def write_csv(records: list[dict[str, str | int]], path: Path) -> None:
 def write_markdown(requirements: list[dict[str, str]], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
-        "# Army Weather Product Brief",
+        "# Operational Weather Product Brief",
         "",
-        "This is a simulated product-design brief for portfolio purposes, not an operational MeteoSwiss or Swiss Army product.",
+        "This is a simulated product-design brief for portfolio purposes, not an operational MeteoSwiss or internal operational product.",
         "It demonstrates how user requirements can be translated into weather-product concepts and update frequencies.",
         "",
         "| Mission profile | User group | Operational question | Recommended weather products | Update frequency |",
@@ -47,10 +47,10 @@ def write_markdown(requirements: list[dict[str, str]], path: Path) -> None:
 
 
 def main() -> None:
-    write_csv(product_matrix_records(), Path("products/army_weather_product_matrix.csv"))
-    write_markdown(summarize_requirements(), Path("products/army_weather_product_brief.md"))
-    print("saved products/army_weather_product_matrix.csv")
-    print("saved products/army_weather_product_brief.md")
+    write_csv(product_matrix_records(), Path("products/ops_weather_product_matrix.csv"))
+    write_markdown(summarize_requirements(), Path("products/ops_weather_product_brief.md"))
+    print("saved products/ops_weather_product_matrix.csv")
+    print("saved products/ops_weather_product_brief.md")
 
 
 if __name__ == "__main__":

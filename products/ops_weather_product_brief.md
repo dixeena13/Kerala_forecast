@@ -1,6 +1,6 @@
-# Army Weather Product Brief
+# Operational Weather Product Brief
 
-This is a simulated product-design brief for portfolio purposes, not an operational MeteoSwiss or Swiss Army product.
+This is a simulated product-design brief for portfolio purposes, not an operational MeteoSwiss or internal operational product.
 It demonstrates how user requirements can be translated into weather-product concepts and update frequencies.
 
 | Mission profile | User group | Operational question | Recommended weather products | Update frequency |
