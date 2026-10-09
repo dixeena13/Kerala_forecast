@@ -8,3 +8,4 @@ build/
 *.egg-info/
 artifacts/
 figures/*.tmp
+tests/test_jup.ipynb
