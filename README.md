@@ -198,6 +198,25 @@ python3 scripts/plot_rag_workflow.py
 
 The current version is deliberately local and lightweight. A production version could add embeddings, an LLM response layer, access control, feedback collection, and answer-quality evaluation.
 
+## What Accompanies The Wettest Days?
+
+A follow-up analysis connects rainfall extremes with a daily circulation index.
+It compares extreme-day frequency across index thirds, tracks annual variability,
+and reports the sample sizes behind the comparisons.
+
+```bash
+python3 scripts/analyse_rainfall_circulation.py
+```
+
+![Rainfall extremes and circulation diagnostic](figures/rainfall_circulation_demo.png)
+
+The reproducible example uses **simulated rainfall and a toy circulation index**,
+with a deliberately prescribed association. It is not a finding about real
+atmospheric circulation. Thresholds are fitted on a fixed reference period;
+missing observations are excluded, not counted as dry days. CSVs and a methods
+report are saved in `products/`. Prepared daily netCDF input is also supported.
+See [the methods and input guide](docs/rainfall_circulation.md).
+
 ## Real-Data Extension
 
 The ML pipeline uses simulated demo data so the project can run easily and reproducibly. The project also includes a live Open-Meteo forecast plot for Kochi to show how real weather data can enter the workflow. In a next step, the demo data could be replaced with GFS GRIB2 forecasts and CHIRPS, IMERG, or station rainfall observations.
