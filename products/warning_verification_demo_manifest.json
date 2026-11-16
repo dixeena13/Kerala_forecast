@@ -1,0 +1,29 @@
+{
+  "source": "SIMULATED paired rainfall | seed 23",
+  "seed": 23,
+  "threshold_mm_24h": 20,
+  "comparison": ">=; exact paired coordinates",
+  "pooling": "unweighted counts, not mean of location scores",
+  "undefined_scores": "NaN in CSV",
+  "numpy_version": "2.4.6",
+  "xarray_version": "2026.4.0",
+  "samples": [
+    {
+      "dimensions": {
+        "time": 120,
+        "station": 3
+      },
+      "start": "2020-06-01T00:00:00",
+      "end": "2020-09-28T00:00:00"
+    },
+    {
+      "dimensions": {
+        "time": 120,
+        "latitude": 8,
+        "longitude": 6
+      },
+      "start": "2020-06-01T00:00:00",
+      "end": "2020-09-28T00:00:00"
+    }
+  ]
+}

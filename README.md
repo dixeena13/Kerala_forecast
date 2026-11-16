@@ -1,71 +1,149 @@
-# Kerala Rainfall Forecast Postprocessing Prototype
-This repository demonstrates how to structure a practical ML workflow for improving local rainfall forecasts in **Kerala, India**, a South Asian monsoon region. It is a compact prototype, not an operational weather service. The included demo data are simulated but shaped like meteorological station/NWP data.
+# Kerala Rainfall: Postprocessing & Verification
 
-## What The Prototype Does
+A small scientific Python project exploring two questions: **how can a model
+adjust local rainfall estimates, and how can threshold-based event proposals be
+checked against reference rainfall?** The examples focus on Kerala, India.
 
-1. Builds a Kerala monsoon-like demo dataset.
-2. Converts meteorological variables into ML features.
-3. Trains a small PyTorch model to postprocess raw NWP rainfall into local rainfall estimates.
-4. Evaluates overall error and heavy-rain detection metrics.
-5. Serves a `/predict` API for Kerala stations such as Kochi, Idukki, Wayanad, and Kozhikode.
+Python · PyTorch · xarray · FastAPI · pytest · Docker
 
-## Repository Structure
+> **Research prototype, not a weather or warning service.** Model training and
+> verification examples use simulated data. Separate visualizations use live
+> Open-Meteo forecasts, not rainfall observations or predictions from this model.
 
-```text
-.
-├── src/meteo_ml/
-│   ├── kerala.py       # Kerala stations and metadata
-│   ├── data.py         # xarray demo dataset and netCDF-ready loader
-│   ├── features.py     # Feature extraction and standardization
-│   ├── model.py        # PyTorch precipitation postprocessing model
-│   ├── evaluate.py     # MAE/RMSE and heavy-rain metrics
-│   ├── scenarios.py    # Simulated climate-scenario ensemble and extremes indicators
-│   ├── rag.py          # Local RAG-style retrieval over project docs/products
-│   ├── ops_weather_products.py # Operational weather-product requirements and decision matrix
-│   ├── train.py        # Training and model artifact export
-│   └── serve.py        # FastAPI inference service
-├── tests/
-│   └── test_pipeline.py
-├── docs/
-│   ├── workflow.md     # Step-by-step explanation
-│   ├── climate_scenario_extension.md
-│   ├── genai_rag_extension.md
-│   └── ops_weather_product_extension.md
-├── .github/workflows/ci.yml
-├── Dockerfile
-├── pyproject.toml
-└── requirements.txt
-```
+[Quick start](#quick-start) · [Verification](#rainfall-event-verification) ·
+[Data](#data-and-scope) · [API](#try-the-api) · [Extensions](#optional-explorations)
+
+## At A Glance
+
+| Component | What it demonstrates | Data |
+| --- | --- | --- |
+| Rainfall postprocessing | Small PyTorch regressor, feature preparation, MAE/RMSE and heavy-rain detection | Simulated station/NWP-like samples |
+| Event verification | Contingency tables, POD, FAR, CSI, frequency bias; station and grid summaries | Simulated paired daily rainfall; prepared netCDF input supported |
+| Forecast visualization | Rainfall amount, precipitation probability and spatial displays | Live external Open-Meteo forecasts |
+| Software workflow | Automated tests, GitHub Actions, an example API and container | Local prototype |
 
 ## Quick Start
 
+Use **Python 3.13**. Run these commands from the repository root. If an existing
+virtual environment uses an older Python version, select a 3.13 interpreter when
+creating the environment.
+
 ```bash
+python3 --version
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 python3 -m pip install -e .
-python3 -m pytest -o cache_dir=/tmp/meteo-ml-pytest-cache
+python3 -m pytest
+```
+
+The editable installation makes the package under `src/` importable from scripts
+and notebooks using this environment. Tests check software behavior, not the
+accuracy of a real weather forecast.
+
+Train the rainfall model and generate the main diagnostics:
+
+```bash
 python3 -m meteo_ml.train --epochs 100
 python3 scripts/plot_kerala_demo.py
+python3 scripts/verify_rainfall_warnings.py
+```
+
+Training saves a checkpoint in `artifacts/kerala_rain_model.pt`. Figures are
+written to `figures/`; verification tables and reports go to `products/`.
+No download or API key is needed for these simulated examples.
+
+## Rainfall Event Verification
+
+This extension checks whether a proposed daily rainfall exceedance coincides
+with a reference exceedance. It uses one xarray-based counting implementation
+for station series and gridded arrays, and also accepts matched binary event flags.
+
+```bash
+python3 scripts/verify_rainfall_warnings.py
+```
+
+![Station rainfall proposal verification](figures/warning_verification_demo_station.png)
+
+The station diagnostic shows score changes across rainfall thresholds, the daily
+sequence of hits/misses/false alarms, and CSI at each location. The grid diagnostic
+shows the same pooled metrics alongside cell-level CSI and false alarm ratio.
+
+![Gridded rainfall proposal verification](figures/warning_verification_demo_grid.png)
+
+| Metric | Question |
+| --- | --- |
+| Probability of detection (POD) | How many reference events were detected? |
+| False alarm ratio (FAR) | How many proposals were not confirmed? |
+| Critical success index (CSI) | How much overlap remains after accounting for misses and false alarms? |
+| Frequency bias | Were too many or too few events proposed? |
+
+The demo uses illustrative thresholds of 10, 20 and 40 mm in 24 hours, **not
+official warning levels**. Both sides of the comparison are simulated. Results
+demonstrate verification code, not real-world warning performance.
+
+Key safeguards include exact coordinate matching, explicit accumulation metadata,
+paired missing-data exclusion, and NaN scores when denominators are zero. Counts
+are pooled before computing aggregate scores. The grid summary is unweighted.
+
+Useful outputs:
+
+- [Verification report](products/warning_verification_demo_report.md)
+- [Pooled threshold scores](products/warning_verification_demo_summary.csv)
+- [Station and grid-cell scores](products/warning_verification_demo_locations.csv)
+- [Run metadata](products/warning_verification_demo_manifest.json)
+- [Methods, formulas, limitations and netCDF input guide](docs/warning_verification.md)
+
+For prepared, independently matched daily data:
+
+```bash
+python3 scripts/verify_rainfall_warnings.py --input data/matched_daily_rainfall.nc --threshold 20
+```
+
+This does not fetch observations or parse warning bulletins. Matching forecast
+lead times, observation quality, accumulation windows and spatial support remains
+the caller's responsibility. Exact sample verification is not episode-, polygon-,
+impact- or neighborhood-based warning verification.
+
+## Data And Scope
+
+**Simulated rainfall** keeps training, climate examples and verification small
+and reproducible. These examples do not establish forecast skill or climate trends.
+The verification generator has its own fixed seed and does not evaluate the
+trained PyTorch model.
+
+**Live forecasts** are used only by the Open-Meteo plotting scripts:
+
+```bash
 python3 scripts/plot_real_open_meteo_kochi.py
 python3 scripts/plot_real_open_meteo_station_map.py
 python3 scripts/plot_real_open_meteo_field_map.py
-python3 scripts/plot_climate_extreme_scenario.py
-python3 scripts/generate_scenario_product_summary.py
-python3 scripts/generate_ops_weather_product_brief.py
-python3 scripts/plot_ops_weather_decision_matrix.py
+```
+
+![External rainfall forecast for Kochi](figures/kochi_real_open_meteo_forecast.png)
+
+These commands require internet access and may give different results on each
+run. Precipitation amount and precipitation probability are different quantities.
+The field-style figure interpolates forecasts sampled at API locations; it is
+not a native model grid, radar analysis or observed rainfall map.
+
+Prepared netCDF readers are available for specific documented schemas; this is
+not a general GRIB/reanalysis ingestion system. Some files require an additional
+xarray backend. See the individual method guides before using external data.
+
+## Try The API
+
+```bash
 uvicorn meteo_ml.serve:app --reload
 ```
-The server keeps running until stopped with `CTRL+C`.
 
-Open the interactive API documentation and test page:
+Open [the interactive API page](http://127.0.0.1:8000/docs) to inspect and test
+requests. The server runs until stopped with `CTRL+C`; `--reload` is for local
+development. `/health` reports service status and `/stations` lists locations.
+`/predict` requires a **POST** request, not a browser GET.
 
-```text
-http://127.0.0.1:8000/docs
-```
-
-Example inference request:
+From another terminal:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/predict \
@@ -82,141 +160,102 @@ curl -X POST http://127.0.0.1:8000/predict \
   }'
 ```
 
-Example response:
+The response contains a rainfall estimate, station metadata and a model-version
+label. Risk labels are illustrative categories, not official warnings.
+**The current API trains a separate small demo model at startup; it does not
+load the checkpoint produced by the training command.** Outputs can therefore
+differ between runs and from the offline model's evaluation.
 
-```json
-{
-  "station": "Kochi",
-  "district": "Ernakulam",
-  "precipitation_mm": 24.7,
-  "heavy_rain_risk": "heavy",
-  "model_version": "kerala-prototype-0.2.0"
-}
-```
-Example training output:
-
-```text
-mae_mm=1.919 rmse_mm=2.396 heavy_rain_recall=0.667
-```
-
-## Figures
-
-The repository includes plotting and product-generation scripts:
-
-```bash
-python3 scripts/plot_kerala_demo.py
-python3 scripts/plot_real_open_meteo_kochi.py
-python3 scripts/plot_real_open_meteo_station_map.py
-python3 scripts/plot_real_open_meteo_field_map.py
-python3 scripts/plot_climate_extreme_scenario.py
-python3 scripts/generate_scenario_product_summary.py
-python3 scripts/generate_ops_weather_product_brief.py
-python3 scripts/plot_ops_weather_decision_matrix.py
-```
-
-The first figure visualizes the simulated Kerala monsoon-like dataset used for the reproducible ML pipeline:
-
-![Kerala demo rainfall](figures/kerala_demo_rainfall.png)
-
-The second figure uses **real forecast data** from the Open-Meteo Forecast API for Kochi, Kerala. It shows daily precipitation sum and precipitation probability:
-
-![Kochi real Open-Meteo forecast](figures/kochi_real_open_meteo_forecast.png)
-
-The third figure is a station forecast map using real Open-Meteo forecast data for multiple Kerala stations. Color shows forecast rainfall and circle size shows rain probability:
-
-![Kerala real station forecast map](figures/kerala_real_station_forecast_map.png)
-
-The fourth figure is a gridded weather-field style rainfall map for Kerala. It samples real Open-Meteo forecast data over a small latitude/longitude grid, shades forecast rainfall, and overlays station locations:
-
-![Kerala real rainfall field map](figures/kerala_real_rainfall_field_map.png)
-
-Small note: A more readable Docker version is:
+### Docker
 
 ```bash
 docker build -t kerala-rainfall-prototype .
-docker run -p 8000:8000 kerala-rainfall-prototype
+docker run --rm -p 8000:8000 kerala-rainfall-prototype
 ```
 
-## Operational Weather Product Extension
+Then open the same `/docs` address. The image runs the example API, not a
+scheduled forecasting or verification service.
 
-This follow-up extension is inspired by project-leadership and customer-facing weather-service work. It translates simulated operational user requirements into weather-product priorities, a product matrix, and a short briefing document.
+## Optional Explorations
+
+These follow-ups are separate demonstrations, not prerequisites for the core
+rainfall and verification workflows.
+
+<details>
+<summary><strong>Climate indicators and circulation diagnostics</strong></summary>
+
+Simulated baseline/future ensembles illustrate heavy-rain days, annual maxima,
+percentiles and ensemble spread. A second example relates very wet days to a
+toy circulation index with a deliberately prescribed association.
+
+```bash
+python3 scripts/plot_climate_extreme_scenario.py
+python3 scripts/generate_scenario_product_summary.py
+python3 scripts/analyse_rainfall_circulation.py
+```
+
+These are not climate projections or findings about real circulation.
+Read the [scenario guide](docs/climate_scenario_extension.md) and
+[circulation methods](docs/rainfall_circulation.md).
+
+</details>
+
+<details>
+<summary><strong>Weather-product planning</strong></summary>
+
+An illustrative priority matrix translates hypothetical user needs into product
+choices. Weights are assumptions, not requirements collected from real clients.
 
 ```bash
 python3 scripts/generate_ops_weather_product_brief.py
 python3 scripts/plot_ops_weather_decision_matrix.py
 ```
 
-Outputs:
+Read the [product-planning guide](docs/ops_weather_product_extension.md).
 
-- `products/ops_weather_product_matrix.csv`
-- `products/ops_weather_product_brief.md`
-- `figures/ops_weather_product_decision_matrix.png`
+</details>
 
-![Operational weather product decision matrix](figures/ops_weather_product_decision_matrix.png)
+<details>
+<summary><strong>Local documentation retrieval</strong></summary>
 
-The extension is not an operational MeteoSwiss or internal operational product. It demonstrates requirements elicitation, product selection, and communication of meteorological hazards for different user groups.
-
-## Climate Scenario Follow-Up
-
-This repository also includes a small follow-up extension inspired by climate-scenario product work. It uses a simulated baseline/future rainfall ensemble to derive user-facing extreme-rainfall indicators:
-
-- heavy-rain days per year above 20 mm/day
-- annual maximum daily rainfall
-- 95th percentile daily rainfall
-- ensemble mean change and 10th-90th percentile spread
-
-The extension is not an operational climate projection. 
-
-```bash
-python3 scripts/plot_climate_extreme_scenario.py
-python3 scripts/generate_scenario_product_summary.py
-```
-
-![Climate extreme scenario demo](figures/climate_extreme_scenario_demo.png)
-
-The extension also generates a small user-facing scenario product summary:
-
-```bash
-python3 scripts/generate_scenario_product_summary.py
-```
-
-Outputs:
-
-- `products/extreme_rainfall_scenario_summary.csv`
-- `products/extreme_rainfall_scenario_summary.md`
-
-## GenAI/RAG Extension
-
-The project includes a small local RAG-style assistant for scenario-product support. It retrieves evidence from the README, workflow notes, climate-scenario documentation, and generated product summaries, then returns cited snippets. This demonstrates how GenAI could help users interpret rainfall and climate-scenario products without giving ungrounded answers.
+A lightweight text retriever returns cited excerpts from project documents.
+It has **no LLM response generation** and is not a complete generative RAG system.
 
 ```bash
 python3 scripts/query_scenario_assistant.py "How should users interpret heavy-rain scenario indicators?"
 python3 scripts/plot_rag_workflow.py
 ```
 
-![RAG scenario assistant workflow](figures/rag_scenario_assistant_workflow.png)
+Read the [retrieval guide](docs/genai_rag_extension.md).
 
-The current version is deliberately local and lightweight. A production version could add embeddings, an LLM response layer, access control, feedback collection, and answer-quality evaluation.
+</details>
 
-## What Accompanies The Wettest Days?
+## Repository Map
 
-A follow-up analysis connects rainfall extremes with a daily circulation index.
-It compares extreme-day frequency across index thirds, tracks annual variability,
-and reports the sample sizes behind the comparisons.
-
-```bash
-python3 scripts/analyse_rainfall_circulation.py
+```text
+src/meteo_ml/     Data, features, model, evaluation, verification and API
+scripts/          Runnable analyses, figures and report generation
+tests/            Unit and integration checks
+docs/             Workflow descriptions, input contracts and limitations
+figures/          Generated visual diagnostics
+products/         CSV tables, reports and run metadata
+artifacts/        Saved model checkpoint
+.github/workflows/ci.yml
+Dockerfile
 ```
 
-![Rainfall extremes and circulation diagnostic](figures/rainfall_circulation_demo.png)
+GitHub Actions installs the package and runs pytest on Python 3.13. The new
+verification tests cover hand-calculated scores, missing values, undefined
+metrics, coordinate mismatches, threshold equality and station/grid aggregation.
 
-The reproducible example uses **simulated rainfall and a toy circulation index**,
-with a deliberately prescribed association. It is not a finding about real
-atmospheric circulation. Thresholds are fitted on a fixed reference period;
-missing observations are excluded, not counted as dry days. CSVs and a methods
-report are saved in `products/`. Prepared daily netCDF input is also supported.
-See [the methods and input guide](docs/rainfall_circulation.md).
+## Current Limitations
 
-## Real-Data Extension
+The ML example is intentionally small: preprocessing currently fits scaling
+before its train/validation split, and training is not seeded. Reported errors
+should not be presented as an independent or reproducible forecast benchmark.
+The API, climate experiments and verification runner are separate workflows.
 
-The ML pipeline uses simulated demo data so the project can run easily and reproducibly. The project also includes a live Open-Meteo forecast plot for Kochi to show how real weather data can enter the workflow. In a next step, the demo data could be replaced with GFS GRIB2 forecasts and CHIRPS, IMERG, or station rainfall observations.
+A real evaluation would require archived forecasts paired with quality-controlled
+observations, a fixed lead-time and accumulation definition, an independent
+evaluation period and uncertainty analysis. No performance claim, operational
+readiness or affiliation with a meteorological service is implied.
