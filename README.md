@@ -4,8 +4,6 @@ A small scientific Python project exploring two questions: **how can a model
 adjust local rainfall estimates, and how can threshold-based event proposals be
 checked against reference rainfall?** The examples focus on Kerala, India.
 
-Python · PyTorch · xarray · FastAPI · pytest · Docker
-
 > **Research prototype, not a weather or warning service.** Model training and
 > verification examples use simulated data. Separate visualizations use live
 > Open-Meteo forecasts, not rainfall observations or predictions from this model.
