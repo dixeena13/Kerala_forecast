@@ -1,4 +1,4 @@
-# Kerala Rainfall: Postprocessing & Verification
+# Kerala Rainfall Forecast Postprocessing Prototype
 
 A small scientific Python project exploring two questions: **how can a model
 adjust local rainfall estimates, and how can threshold-based event proposals be
