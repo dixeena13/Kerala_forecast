@@ -1,14 +1,16 @@
-# Kerala Rainfall Forecast: Postprocessing \& Verification
+# Kerala Weather Analytics: Rainfall, Solar Energy & Verification
 
-A small scientific Python project exploring two questions: **how can a model
-adjust local rainfall estimates, and how can threshold-based event proposals be
-checked against reference rainfall?** The examples focus on Kerala, India.
+A scientific Python project connecting weather data with **rainfall modelling,
+forecast verification and solar-energy analysis** in Kerala, India. Examples
+explore local rainfall estimates, threshold-based events, and how variable
+sunlight affects on-site electricity use and simplified project economics.
 
-> **Research prototype, not a weather or warning service.** Model training and
-> verification examples use simulated data. Separate visualizations use live
-> Open-Meteo forecasts, not rainfall observations or predictions from this model.
+> **Research prototype, not an operational weather or energy service.** Training,
+> verification and solar examples use simulated data; financial inputs are
+> hypothetical. Separate visualizations use live Open-Meteo forecasts, not
+> rainfall observations or predictions from this model. Results are not investment advice.
 
-[Quick start](#quick-start) · [Verification](#rainfall-event-verification) ·
+[Quick start](#quick-start) · [Solar energy](#solar-energy-and-on-site-use) · [Verification](#rainfall-event-verification) ·
 [Data](#data-and-scope) · [API](#try-the-api) · [Extensions](#optional-explorations)
 
 ## At A Glance
@@ -18,6 +20,7 @@ checked against reference rainfall?** The examples focus on Kerala, India.
 | Rainfall postprocessing | Small PyTorch regressor, feature preparation, MAE/RMSE and heavy-rain detection | Simulated station/NWP-like samples |
 | Event verification | Contingency tables, POD, FAR, CSI, frequency bias; station and grid summaries | Simulated paired daily rainfall; prepared netCDF input supported |
 | Forecast visualization | Rainfall amount, precipitation probability and spatial displays | Live external Open-Meteo forecasts |
+| Solar energy | PV generation, on-site use and financial sensitivity for a Kochi example | Simulated hourly weather and demand; hypothetical INR assumptions |
 | Software workflow | Automated tests, GitHub Actions, an example API and container | Local prototype |
 
 ## Quick Start
@@ -51,6 +54,50 @@ python3 scripts/verify_rainfall_warnings.py
 Training saves a checkpoint in `artifacts/kerala_rain_model.pt`. Figures are
 written to `figures/`; verification tables and reports go to `products/`.
 No download or API key is needed for these simulated examples.
+
+For the solar-energy workflow, install the optional tools and run:
+
+```bash
+python3 -m pip install -e '.[energy]'
+python3 scripts/analyse_solar_potential.py
+```
+
+This adds `pvlib` without making it a requirement for the original rainfall
+workflow. Tests that require it are skipped if it is not installed; CI installs
+the extra and runs both workflows.
+
+## Solar Energy And On-Site Use
+
+The solar workflow follows the weather-to-energy link for an illustrative
+commercial building in Kochi. It uses `pvlib` to estimate solar generation,
+matches generation to hourly demand, and compares on-site use, grid imports,
+exports and simplified financial outcomes.
+
+![Kerala solar generation and on-site use](figures/solar_energy_demo_balance.png)
+
+The daily profile shows when generation overlaps with demand. Monthly balances
+separate self-consumed solar electricity from exports. A second figure compares
+the effect of installation cost, import price and output assumptions on net
+present value (NPV).
+
+![Solar project sensitivity](figures/solar_energy_demo_sensitivity.png)
+
+The analysis reports annual generation, self-consumption, self-sufficiency,
+net annual benefit, simple payback and NPV. Weather, demand and monsoon cloud
+attenuation are **simulated**. INR costs and prices are hypothetical, not current
+tariffs or supplier quotes. Output stress tests are not weather probabilities.
+This module does not use the rainfall model to predict sunlight.
+
+Useful outputs:
+
+- [Solar screening report](products/solar_energy_demo_report.md)
+- [Hourly energy balances](products/solar_energy_demo_hourly.csv)
+- [Financial sensitivity cases](products/solar_energy_demo_sensitivity.csv)
+- [Assumptions and run metadata](products/solar_energy_demo_summary.json)
+- [Solar methods and prepared-data input guide](docs/solar_energy.md)
+
+No battery, heating, CO2 savings or regulatory analysis is included. These are
+workflow demonstrations, not a site-specific engineering or investment assessment.
 
 ## Rainfall Event Verification
 
@@ -110,6 +157,12 @@ impact- or neighborhood-based warning verification.
 and reproducible. These examples do not establish forecast skill or climate trends.
 The verification generator has its own fixed seed and does not evaluate the
 trained PyTorch model.
+
+**Simulated solar weather and demand** are generated separately for a Kochi
+example with prescribed monsoon cloud attenuation. The energy analysis uses
+hourly radiation, temperature and wind, not the rainfall model's output.
+Prepared hourly weather and load CSVs are supported under the solar input schema;
+their provenance and quality must be checked independently.
 
 **Live forecasts** are used only by the Open-Meteo plotting scripts:
 
@@ -176,8 +229,8 @@ scheduled forecasting or verification service.
 
 ## Optional Explorations
 
-These follow-ups are separate demonstrations, not prerequisites for the core
-rainfall and verification workflows.
+These follow-ups are separate demonstrations, not prerequisites for the rainfall,
+solar-energy or verification workflows.
 
 <details>
 <summary><strong>Climate indicators and circulation diagnostics</strong></summary>
@@ -231,7 +284,7 @@ Read the [retrieval guide](docs/genai_rag_extension.md).
 ## Repository Map
 
 ```text
-src/meteo_ml/     Data, features, model, evaluation, verification and API
+src/meteo_ml/     Rainfall model, event verification, solar-energy analysis and API
 scripts/          Runnable analyses, figures and report generation
 tests/            Unit and integration checks
 docs/             Workflow descriptions, input contracts and limitations
@@ -242,16 +295,20 @@ artifacts/        Saved model checkpoint
 Dockerfile
 ```
 
-GitHub Actions installs the package and runs pytest on Python 3.13. The new
+GitHub Actions installs the package with the energy extra and runs pytest on Python 3.13. The
 verification tests cover hand-calculated scores, missing values, undefined
 metrics, coordinate mismatches, threshold equality and station/grid aggregation.
+Energy tests check hourly conservation, financial arithmetic, input validation,
+PV output and prepared-data round trips. See [the workflow guide](docs/workflow.md)
+for the original rainfall pipeline and links to the other methods.
 
 ## Current Limitations
 
 The ML example is intentionally small: preprocessing currently fits scaling
 before its train/validation split, and training is not seeded. Reported errors
 should not be presented as an independent or reproducible forecast benchmark.
-The API, climate experiments and verification runner are separate workflows.
+The rainfall API, solar-energy analysis, climate experiments and verification
+runner are separate workflows, not an integrated operational platform.
 
 A real evaluation would require archived forecasts paired with quality-controlled
 observations, a fixed lead-time and accumulation definition, an independent

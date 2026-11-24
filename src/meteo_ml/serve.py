@@ -31,7 +31,7 @@ def _bootstrap_model() -> tuple[PrecipitationRegressor, np.ndarray, np.ndarray]:
     return model, mean, std
 
 
-app = FastAPI(title="Kerala Rainfall Forecast Postprocessing Prototype")
+app = FastAPI(title="Kerala Weather Analytics: Rainfall API")
 @app.get("/", include_in_schema=False)
 def root() -> RedirectResponse:
     return RedirectResponse(url="/docs")

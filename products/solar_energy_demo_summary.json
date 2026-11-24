@@ -1,0 +1,50 @@
+{
+  "source": "SIMULATED weather and building demand | Kochi, Kerala example",
+  "site": {
+    "latitude": 9.9312,
+    "longitude": 76.2673,
+    "altitude_m": 10,
+    "capacity_kwp": 100,
+    "tilt_deg": 10,
+    "azimuth_deg": 180,
+    "losses_fraction": 0.14,
+    "dc_ac_ratio": 1.1
+  },
+  "economics": {
+    "capex_inr_per_kwp": 60000,
+    "import_inr_per_kwh": 8.0,
+    "export_inr_per_kwh": 3.0,
+    "annual_opex_fraction": 0.015,
+    "discount_rate": 0.04,
+    "years": 25
+  },
+  "hours": 8760,
+  "seed": 31,
+  "pvlib_version": "0.16.1",
+  "numpy_version": "2.4.6",
+  "pandas_version": "3.0.3",
+  "time": "UTC hourly interval starts; geometry at midpoint",
+  "cashflows": "Constant annual output and real prices; end-of-year net benefit.",
+  "base_result": {
+    "scenario": "Base assumptions",
+    "output_multiplier": 1.0,
+    "capex_inr_per_kwp": 60000,
+    "import_inr_per_kwh": 8.0,
+    "export_inr_per_kwh": 3.0,
+    "annual_opex_fraction": 0.015,
+    "discount_rate": 0.04,
+    "years": 25,
+    "pv_kwh": 119072.42711835937,
+    "demand_kwh": 183048.25675567496,
+    "self_consumed_kwh": 91911.02716424273,
+    "export_kwh": 27161.399954116634,
+    "import_kwh": 91137.22959143223,
+    "self_consumption_fraction": 0.771891775355197,
+    "self_sufficiency_fraction": 0.5021136436547531,
+    "capex_inr": 6000000,
+    "gross_annual_benefit_inr": 816772.4171762917,
+    "net_annual_benefit_inr": 726772.4171762917,
+    "simple_payback_years": 8.255679299596467,
+    "npv_inr": 5353696.801968424
+  }
+}

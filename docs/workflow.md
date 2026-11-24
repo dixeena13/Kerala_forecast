@@ -1,6 +1,15 @@
-# Kerala Rainfall Prototype: Step-by-Step
+# Kerala Weather Analytics: Workflow Guide
 
-Why Kerala: it is a South Asian monsoon region with coastal and orographic rainfall patterns
+The project has three independent workflows: rainfall postprocessing, rainfall
+event verification, and solar-energy screening. They share a Kerala setting and
+scientific Python tooling, but are not an integrated operational service.
+
+This page explains the original rainfall workflow. For the other analyses, see
+the [verification guide](warning_verification.md) and the
+[solar-energy guide](solar_energy.md). Solar generation is calculated from
+radiation and temperature, not inferred from the rainfall model.
+
+Why Kerala: it is a South Asian monsoon region with coastal and orographic rainfall patterns.
 
 ## Step 1: Create a meteorological demo dataset
 
@@ -12,7 +21,7 @@ The file `src/meteo_ml/data.py` creates a simulated `xarray.Dataset` with variab
 - day of year
 - temperature, humidity, pressure, wind components
 - raw NWP precipitation
-- observed precipitation target
+- simulated reference precipitation target (not a measured observation)
 
 In an operational project, this layer would be replaced by real netCDF/GRIB/station/radar inputs.
 
@@ -36,6 +45,10 @@ In an operational project, this layer would be replaced by real netCDF/GRIB/stat
 - `GET /health`
 - `GET /stations`
 - `POST /predict`
+
+The API trains its own small demo model at startup; it does not load the saved
+offline checkpoint. The API serves rainfall predictions only, not solar-energy
+or financial results.
 
 ## Step 5: Test and package
 
